@@ -6,6 +6,7 @@ from database import Database
 from modules.dialog_manager import DialogManager
 import config
 
+MANY_THRESHOLD = 5  # Порог, при котором товара считается "много"
 class ProductListPage:
     def __init__(self, page: ft.Page, user):
         self.page = page
@@ -313,11 +314,11 @@ class ProductListPage:
                                         weight=ft.FontWeight.BOLD,
                                         color=ft.Colors.BLACK
                                    ),
-                                   ft.Text(
+                                    ft.Text(
                                         f"Количество на складе: {product.stock}",
                                         size=14,
                                         weight=ft.FontWeight.BOLD,
-                                        color=ft.Colors.BLACK if product.stock > 0 else ft.Colors.BLUE_ACCENT_400
+                                        color=ft.Colors.BLACK if product.stock > MANY_THRESHOLD else ft.Colors.BLUE_ACCENT_400
                                    ),
                                     
                                 ],
