@@ -313,11 +313,11 @@ class ProductListPage:
                                         weight=ft.FontWeight.BOLD,
                                         color=ft.Colors.BLACK
                                    ),
-                                   ft.Text(
-                                        f"Количество на складе: {product.stock}",
+                                    ft.Text(
+                                        f"В наличии: {'Много' if product.stock > 5 else 'Мало'}",
                                         size=14,
                                         weight=ft.FontWeight.BOLD,
-                                        color=ft.Colors.BLACK if product.stock > 0 else ft.Colors.BLUE_ACCENT_400
+                                        color=ft.Colors.BLACK if product.stock > 5 else ft.Colors.BLUE_ACCENT_400
                                    ),
                                     
                                 ],
