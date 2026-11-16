@@ -6,6 +6,7 @@ from database import Database
 from modules.dialog_manager import DialogManager
 import config
 
+# Файл отвечает за отображение каталога товаров и работу с фильтрами.
 MANY_THRESHOLD = 5  # Порог, при котором товара считается "много"
 class ProductListPage:
     def __init__(self, page: ft.Page, user):
