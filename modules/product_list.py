@@ -315,7 +315,7 @@ class ProductListPage:
                                         color=ft.Colors.BLACK
                                    ),
                                     ft.Text(
-                                        f"Количество на складе: {product.stock}",
+                                        f"В наличии: {'Много' if product.stock > MANY_THRESHOLD else 'Мало'}",
                                         size=14,
                                         weight=ft.FontWeight.BOLD,
                                         color=ft.Colors.BLACK if product.stock > MANY_THRESHOLD else ft.Colors.BLUE_ACCENT_400
