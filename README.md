@@ -50,6 +50,51 @@
    python main.py
    ```
 
+## Запуск PostgreSQL через Docker Compose
+
+### Предварительные требования
+- Windows 10/11, Docker Desktop с Linux containers, Docker Compose v2.
+- Python 3.10 и зависимости проекта (`pip install -r requirements.txt`).
+- Файл резервной копии БД `db_shoe_store.sql` (custom-дамп `pg_dump`, формат 1.16, создан PostgreSQL 18).
+
+### Создание .env
+Скопируйте `.env.example` в `.env` и задайте локальный пароль:
+POSTGRES_DB=shoe_store
+POSTGRES_USER=shoe_user
+POSTGRES_PASSWORD=<локальный пароль>
+POSTGRES_HOST_PORT=5433
+`.env` исключён из Git (`.gitignore`); не коммитьте его.
+
+### Команды запуска
+docker compose up --build -d
+docker compose ps
+Ожидаемое состояние: `db` — `Up (healthy)`, `db-check` — `Exited (0)`.
+
+### Импорт БД
+docker compose cp db_shoe_store.sql db:/tmp/db_shoe_store.dump
+docker compose exec db pg_restore --no-owner --no-privileges --no-acl --dbname=shoe_store --username=shoe_user --verbose /tmp/db_shoe_store.dump
+Ожидается 5 таблиц.
+
+### Адрес подключения приложения
+В `config.py` в словаре `DB_CONFIG`:
+- `host`: `localhost`
+- `port`: `5433`
+- `database`: `shoe_store`
+- `user`: `shoe_user`
+- `password`: значение `POSTGRES_PASSWORD` из `.env`
+
+Сервис `db-check` внутри Compose подключается к `db:5432` по имени сервиса. Приложение PyQt5 в Windows подключается к `localhost:5433` — опубликованному порту контейнера.
+
+### Проверка
+docker compose run --rm db-check
+Ожидается: `OK: база=shoe_store; таблиц=5`.
+docker compose exec db pg_isready -U shoe_user -d shoe_store
+Ожидается: `accepting connections`.
+
+### Остановка
+docker compose stop
+docker compose start
+
 ## Автор
 
 alenamokhovaya-spec
